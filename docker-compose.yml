@@ -20,7 +20,7 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '1.0'
+          cpus: '1.25'
           memory: '1.5GB'
     networks:
       - app-network
@@ -38,7 +38,7 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.5'
+          cpus: '0.25'
           memory: '1.5GB'
     networks:
       - app-network

@@ -6,6 +6,11 @@ services:
     command: postgres -c 'max_connections=600'
     ports:
       - "2345:5432"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: '1.5GB'
     environment:
       POSTGRES_USER: rinha
       POSTGRES_PASSWORD: rinha123

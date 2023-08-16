@@ -4,13 +4,14 @@ import jakarta.persistence.*;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 @Entity
 @Table(name = "pessoas")
 public class Pessoa {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
     @Column(nullable = false, unique = true, length = 32)
     private String apelido;
     @Column(nullable = false, length = 100)
@@ -31,11 +32,11 @@ public class Pessoa {
         this.stack = stack;
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

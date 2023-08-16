@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 public class PessoaController {
@@ -27,7 +28,7 @@ public class PessoaController {
      * 404 for not found.
      */
     @GetMapping("/pessoas/{id}")
-    public ResponseEntity<Pessoa> getById(@PathVariable Long id) {
+    public ResponseEntity<Pessoa> getById(@PathVariable UUID id) {
         return ResponseEntity.ok(repository.findById(id).orElseThrow(() -> new PessoaNotFoundException(id)));
     }
 
