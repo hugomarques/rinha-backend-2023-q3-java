@@ -10,7 +10,6 @@ import java.util.UUID;
 @Table(name = "pessoas")
 public class Pessoa {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     @Column(nullable = false, unique = true, length = 32)
     private String apelido;

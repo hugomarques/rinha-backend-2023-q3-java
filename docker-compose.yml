@@ -6,17 +6,15 @@ services:
     build: .
     hostname: spring-api1
     environment:
-      - SERVER_PORT:9999
+      - SERVER_PORT=8080
       - DATABASE_URL=jdbc:postgresql://db-postgresql:5432/rinhadb
       - DATABASE_USERNAME=rinha
       - DATABASE_PASSWORD=rinha123
-      - HIKARI_CONNECTION_TIMEOUT=30000
-      - HIKARI_MAXIMUM_POOL_SIZE=300
+      - HIKARI_CONNECTION_TIMEOUT=60000
+      - HIKARI_MAXIMUM_POOL_SIZE=600
       - HIKARI_MINIMUM_IDLE=100
     depends_on:
       - db-postgresql
-    ports:
-      - "9999:9999"
     ulimits:
       nofile:
         soft: 1000000
@@ -24,8 +22,45 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '1.0'
+#          cpus: '0.75'
           memory: '2GB'
+    networks:
+      - app-network
+
+  spring-api2:
+    build: .
+    hostname: spring-api2
+    environment:
+      - SERVER_PORT=8080
+      - DATABASE_URL=jdbc:postgresql://db-postgresql:5432/rinhadb
+      - DATABASE_USERNAME=rinha
+      - DATABASE_PASSWORD=rinha123
+      - HIKARI_CONNECTION_TIMEOUT=60000
+      - HIKARI_MAXIMUM_POOL_SIZE=600
+      - HIKARI_MINIMUM_IDLE=100
+    depends_on:
+      - db-postgresql
+    ulimits:
+      nofile:
+        soft: 1000000
+        hard: 1000000
+    deploy:
+      resources:
+        limits:
+          # cpus: '0.75'
+          memory: '2GB'
+    networks:
+        - app-network
+
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - spring-api1
+      - spring-api2
+    ports:
+      - "9999:9999"
     networks:
       - app-network
 
@@ -42,7 +77,7 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.5'
+#          cpus: '0.75'
           memory: '1GB'
     networks:
       - app-network

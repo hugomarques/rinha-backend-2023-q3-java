@@ -1,6 +1,7 @@
 package com.hugomarques.rinhabackend2023.pessoas;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,9 @@ public class PessoaController {
     @Autowired
     private PessoaRepository repository;
 
+    @Autowired
+    AsyncTaskExecutor taskExecutor;
+
     Map<UUID, Pessoa> localCache = new HashMap<>();
 
     /**
@@ -24,9 +28,10 @@ public class PessoaController {
      */
     @PostMapping("/pessoas")
     public ResponseEntity<Pessoa> newPessoa(@RequestBody Pessoa pessoa) {
-        var saved = repository.save(pessoa);
-        localCache.put(saved.getId(), saved);
-        return new ResponseEntity(saved, HttpStatus.CREATED);
+        pessoa.setId(UUID.randomUUID());
+        localCache.put(pessoa.getId(), pessoa);
+        taskExecutor.submit( () -> repository.save(pessoa));
+        return new ResponseEntity(pessoa, HttpStatus.CREATED);
     }
 
     /**
