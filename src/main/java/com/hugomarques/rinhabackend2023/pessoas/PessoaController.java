@@ -6,7 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -14,13 +16,17 @@ public class PessoaController {
     @Autowired
     private PessoaRepository repository;
 
+    Map<UUID, Pessoa> localCache = new HashMap<>();
+
     /**
      * Returns 201 for success and 401 if there's already a person with that same nickname.
      * 400 for invalid requests.
      */
     @PostMapping("/pessoas")
     public ResponseEntity<Pessoa> newPessoa(@RequestBody Pessoa pessoa) {
-        return new ResponseEntity(repository.save(pessoa), HttpStatus.CREATED);
+        var saved = repository.save(pessoa);
+        localCache.put(saved.getId(), saved);
+        return new ResponseEntity(saved, HttpStatus.CREATED);
     }
 
     /**
@@ -29,6 +35,9 @@ public class PessoaController {
      */
     @GetMapping("/pessoas/{id}")
     public ResponseEntity<Pessoa> getById(@PathVariable UUID id) {
+        if (localCache.containsKey(id)) {
+            return ResponseEntity.ok(localCache.get(id));
+        }
         return ResponseEntity.ok(repository.findById(id).orElseThrow(() -> new PessoaNotFoundException(id)));
     }
 

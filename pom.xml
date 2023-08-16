@@ -14,7 +14,7 @@
 	<name>rinhabackend2023</name>
 	<description>Back para o projeto rinha backend 2023</description>
 	<properties>
-		<java.version>17</java.version>
+		<java.version>20</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -41,6 +41,11 @@
 			<artifactId>postgresql</artifactId>
 		</dependency>
 
+<!--		<dependency>-->
+<!--			<groupId>com.h2database</groupId>-->
+<!--			<artifactId>h2</artifactId>-->
+<!--		</dependency>-->
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -53,6 +58,17 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>19</source>
+					<target>19</target>
+					<compilerArgs>
+						--enable-preview
+					</compilerArgs>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
