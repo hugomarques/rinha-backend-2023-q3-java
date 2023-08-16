@@ -10,11 +10,11 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
-@Configuration
+//@Configuration
 public class LoadDatabase {
     private static final Logger log = LoggerFactory.getLogger(LoadDatabase.class);
 
-    @Bean
+//    @Bean
     CommandLineRunner initDatabase(PessoaRepository repository) {
 
         return args -> {

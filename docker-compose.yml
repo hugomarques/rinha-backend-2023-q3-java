@@ -1,0 +1,47 @@
+version: '3.9'
+name: 'rinha-de-backend'
+
+services:
+  spring-api1:
+    build: .
+    hostname: spring-api1
+    environment:
+      - SERVER_PORT:9999
+      - DATABASE_URL=jdbc:postgresql://db-postgresql:5432/rinhadb
+      - DATABASE_USERNAME=rinha
+      - DATABASE_PASSWORD=rinha123
+      - HIKARI_CONNECTION_TIMEOUT=40000
+      - HIKARI_MAXIMUM_POOL_SIZE=300
+      - HIKARI_MINIMUM_IDLE=300
+    depends_on:
+      - db-postgresql
+    ports:
+      - "9999:9999"
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: '1.5GB'
+    networks:
+      - app-network
+
+  db-postgresql:
+    image: postgres:latest
+    command: postgres -c 'max_connections=600'
+    hostname: db
+    environment:
+      - POSTGRES_PASSWORD=rinha123
+      - POSTGRES_USER=rinha
+      - POSTGRES_DB=rinhadb
+    ports:
+      - "5432:5432"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: '1.5GB'
+    networks:
+      - app-network
+
+networks:
+  app-network:
