@@ -20,7 +20,7 @@ public class PessoaController {
     @Autowired
     AsyncTaskExecutor taskExecutor;
 
-    Map<UUID, Pessoa> localCache = new HashMap<>();
+//    Map<UUID, Pessoa> localCache = new HashMap<>();
 
     /**
      * Returns 201 for success and 401 if there's already a person with that same nickname.
@@ -29,8 +29,8 @@ public class PessoaController {
     @PostMapping("/pessoas")
     public ResponseEntity<Pessoa> newPessoa(@RequestBody Pessoa pessoa) {
         pessoa.setId(UUID.randomUUID());
-        localCache.put(pessoa.getId(), pessoa);
-        taskExecutor.submit( () -> repository.save(pessoa));
+//        localCache.put(pessoa.getId(), pessoa);
+        repository.save(pessoa);
         return new ResponseEntity(pessoa, HttpStatus.CREATED);
     }
 
@@ -40,9 +40,9 @@ public class PessoaController {
      */
     @GetMapping("/pessoas/{id}")
     public ResponseEntity<Pessoa> getById(@PathVariable UUID id) {
-        if (localCache.containsKey(id)) {
-            return ResponseEntity.ok(localCache.get(id));
-        }
+//        if (localCache.containsKey(id)) {
+//            return ResponseEntity.ok(localCache.get(id));
+//        }
         return ResponseEntity.ok(repository.findById(id).orElseThrow(() -> new PessoaNotFoundException(id)));
     }
 

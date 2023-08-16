@@ -35,9 +35,11 @@ services:
       - DATABASE_URL=jdbc:postgresql://db-postgresql:5432/rinhadb
       - DATABASE_USERNAME=rinha
       - DATABASE_PASSWORD=rinha123
-      - HIKARI_CONNECTION_TIMEOUT=60000
-      - HIKARI_MAXIMUM_POOL_SIZE=600
-      - HIKARI_MINIMUM_IDLE=100
+#      - HIKARI_CONNECTION_TIMEOUT=30000
+#      - HIKARI_IDLE_TIMEOUT=60000
+#      - HIKARI_MAX_LIFETIME=180000
+#      - HIKARI_MAXIMUM_POOL_SIZE=600
+#      - HIKARI_MINIMUM_IDLE=100
     depends_on:
       - db-postgresql
     ulimits:
@@ -63,6 +65,10 @@ services:
       - "9999:9999"
     networks:
       - app-network
+    deploy:
+      resources:
+        limits:
+          memory: '1GB'
 
   db-postgresql:
     image: postgres:latest
