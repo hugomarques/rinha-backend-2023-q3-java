@@ -10,11 +10,10 @@ services:
       - DATABASE_URL=jdbc:postgresql://db-postgresql:5432/rinhadb
       - DATABASE_USERNAME=rinha
       - DATABASE_PASSWORD=rinha123
-      - HIKARI_CONNECTION_TIMEOUT=60000
-      - HIKARI_MAXIMUM_POOL_SIZE=600
-      - HIKARI_MINIMUM_IDLE=100
+      - REDIS_HOST=cache
     depends_on:
       - db-postgresql
+      - cache
     ulimits:
       nofile:
         soft: 1000000
@@ -35,13 +34,10 @@ services:
       - DATABASE_URL=jdbc:postgresql://db-postgresql:5432/rinhadb
       - DATABASE_USERNAME=rinha
       - DATABASE_PASSWORD=rinha123
-#      - HIKARI_CONNECTION_TIMEOUT=30000
-#      - HIKARI_IDLE_TIMEOUT=60000
-#      - HIKARI_MAX_LIFETIME=180000
-#      - HIKARI_MAXIMUM_POOL_SIZE=600
-#      - HIKARI_MINIMUM_IDLE=100
+      - REDIS_HOST=cache
     depends_on:
       - db-postgresql
+      - cache
     ulimits:
       nofile:
         soft: 1000000
@@ -69,6 +65,22 @@ services:
       resources:
         limits:
           memory: '1GB'
+
+  cache:
+    hostname: cache
+    image: redis:latest
+    ports:
+      - '6379:6379'
+    deploy:
+      resources:
+        limits:
+          cpus: '0.1'
+          memory: '0.5GB'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+    networks:
+      - app-network
 
   db-postgresql:
     image: postgres:latest

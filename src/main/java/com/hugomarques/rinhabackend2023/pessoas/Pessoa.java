@@ -2,13 +2,14 @@ package com.hugomarques.rinhabackend2023.pessoas;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
 @Entity
 @Table(name = "pessoas")
-public class Pessoa {
+public class Pessoa implements Serializable {
     @Id
     private UUID id;
     @Column(nullable = false, unique = true, length = 32)
