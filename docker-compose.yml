@@ -21,7 +21,7 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.6'
+          cpus: '0.8'
           memory: '1.25GB'
     networks:
       - app-network
@@ -45,7 +45,7 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.6'
+          cpus: '0.8'
           memory: '1.25GB'
     networks:
         - app-network
@@ -70,6 +70,7 @@ services:
   cache:
     hostname: cache
     image: redis:latest
+    command: ["redis-server", "--appendonly", "no", "--save ''"]
     ports:
       - '6379:6379'
     deploy:
@@ -77,9 +78,6 @@ services:
         limits:
           cpus: '0.05'
           memory: '0.25GB'
-    environment:
-      - ALLOW_EMPTY_PASSWORD=yes
-      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
     networks:
       - app-network
 
