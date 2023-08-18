@@ -9,11 +9,16 @@ ENV PATH="$JAVA_HOME/bin:${PATH}"
 
 WORKDIR /app
 
-COPY ./target/rinhabackend2023-0.0.1-SNAPSHOT.jar ./rinha.jar
+COPY src /app/src
+COPY pom.xml /app
+COPY .mvn /app/.mvn
+COPY mvnw /app/mvnw
+
+RUN ./mvnw clean package -DskipTests
 
 FROM ubuntu:latest as RUNTIME
 
-COPY --from=BUILD /app/rinha.jar /rinha.jar
+COPY --from=BUILD /app/target/rinhabackend2023-0.0.1-SNAPSHOT.jar /rinha.jar
 COPY --from=BUILD /jdk-21 /jdk-21
 
 ENV JAVA_HOME=/jdk-21
