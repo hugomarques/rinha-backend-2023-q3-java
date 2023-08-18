@@ -1,14 +1,13 @@
 package com.hugomarques.rinhabackend2023;
 
-import com.hugomarques.rinhabackend2023.pessoas.Pessoa;
-import com.hugomarques.rinhabackend2023.pessoas.PessoaRepository;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
-import java.util.List;
+import com.hugomarques.rinhabackend2023.pessoas.Pessoa;
+import com.hugomarques.rinhabackend2023.pessoas.PessoaRepository;
 
 //@Configuration
 public class LoadDatabase {
