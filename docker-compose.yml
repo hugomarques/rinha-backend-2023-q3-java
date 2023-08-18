@@ -21,8 +21,8 @@ services:
     deploy:
       resources:
         limits:
-#          cpus: '0.75'
-          memory: '2GB'
+          cpus: '0.6'
+          memory: '1.25GB'
     networks:
       - app-network
 
@@ -45,8 +45,8 @@ services:
     deploy:
       resources:
         limits:
-          # cpus: '0.75'
-          memory: '2GB'
+          cpus: '0.6'
+          memory: '1.25GB'
     networks:
         - app-network
 
@@ -64,7 +64,8 @@ services:
     deploy:
       resources:
         limits:
-          memory: '1GB'
+          cpus: '0.2'
+          memory: '0.25GB'
 
   cache:
     hostname: cache
@@ -74,8 +75,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.1'
-          memory: '0.5GB'
+          cpus: '0.05'
+          memory: '0.25GB'
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
       - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
@@ -95,8 +96,8 @@ services:
     deploy:
       resources:
         limits:
-#          cpus: '0.75'
-          memory: '1GB'
+          cpus: '0.05'
+          memory: '0.5GB'
     networks:
       - app-network
 
