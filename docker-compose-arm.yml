@@ -89,8 +89,10 @@ services:
 
   db-postgresql:
     image: postgres:latest
-    command: postgres -c 'max_connections=600'
+    command: postgres
     hostname: db
+    volumes:
+      - ./postgresql.conf:/var/lib/postgresql/data/postgresql.conf
     environment:
       - POSTGRES_PASSWORD=rinha123
       - POSTGRES_USER=rinha

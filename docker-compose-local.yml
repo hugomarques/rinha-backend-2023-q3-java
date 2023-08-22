@@ -3,15 +3,21 @@ version: '3.9'
 services:
   db-postgresql:
     image: postgres:latest
-    command: postgres -c 'max_connections=600'
-    ports:
-      - "2345:5432"
-    deploy:
-      resources:
-        limits:
-          cpus: '0.5'
-          memory: '1.5GB'
+    command: 'postgres -c max_connections=200 -c shared_buffers=256MB -c synchronous_commit=off -c fsync=off -c full_page_writes=off'
+    hostname: db
+    volumes:
+      - ./config/postgresql.conf:/etc/postgresql.conf
+      - ./config/ddl.sql:/docker-entrypoint-initdb.d/ddl.sql
     environment:
-      POSTGRES_USER: rinha
-      POSTGRES_PASSWORD: rinha123
-      POSTGRES_DB: rinhadb
+      - POSTGRES_PASSWORD=rinha123
+      - POSTGRES_USER=rinha
+      - POSTGRES_DB=rinhadb
+      - PGUSER=rinha
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -h db" ]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
