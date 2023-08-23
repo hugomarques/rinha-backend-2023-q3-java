@@ -3,15 +3,19 @@ version: '3.9'
 services:
   db-postgresql:
     image: postgres:latest
-    command: postgres -c 'max_connections=600'
+    command: "postgres -c max_connections=200 -c shared_buffers=256MB -c synchronous_commit=off -c fsync=off -c full_page_writes=off"
+    hostname: db-postgresql
+    volumes:
+      - ./config/ddl.sql:/docker-entrypoint-initdb.d/ddl.sql
     ports:
       - "2345:5432"
-    deploy:
-      resources:
-        limits:
-          cpus: '0.5'
-          memory: '1.5GB'
     environment:
       POSTGRES_USER: rinha
       POSTGRES_PASSWORD: rinha123
       POSTGRES_DB: rinhadb
+  cache:
+    hostname: cache
+    image: redis:latest
+    command: [ "redis-server", "--appendonly", "no", "--save ''" ]
+    ports:
+      - '6379:6379'

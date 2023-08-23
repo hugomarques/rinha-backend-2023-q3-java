@@ -1,31 +1,35 @@
 package com.hugomarques.rinhabackend2023.pessoas;
 
-import jakarta.persistence.*;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-@Entity
 @Table(name = "pessoas")
 public class Pessoa implements Serializable {
+
     @Id
+    @Column(value = "id")
     private UUID id;
-    @Column(nullable = false, unique = true, length = 32)
+    @Column(value = "apelido")
     private String apelido;
-    @Column(nullable = false, length = 100)
+    @Column(value = "nome")
     private String nome;
-    @Column(nullable = false)
+    @Column(value = "nascimento")
     private String nascimento;
-    @Column(nullable = true)
-    @Convert(converter = StringListConverter.class)
+    @Column(value = "stack")
     private List<String> stack;
 
     public Pessoa() {
     }
 
-    public Pessoa(String apelido, String nome, String nascimento, List<String> stack) {
+    public Pessoa(UUID id, String apelido, String nome, String nascimento, List<String> stack) {
+        this.id = id;
         this.apelido = apelido;
         this.nome = nome;
         this.nascimento = nascimento;
